@@ -1,0 +1,26 @@
+extends ../layouts/default
+
+mixin post(post)
+	.post(data-ks-editable=editable(user, { list: 'Event', id: post.id }))
+		h2: a(href='/blog/' + event.slug)= event.title
+		
+      
+.container.event-feed
+	.row.shadow
+		.col-md-10.col-sm-10.col-xs-10
+			h3: a(href='/events/' + post.slug)= post.title
+			.distance 0.4 miles
+			.col-md-2.col-sm-2.col-xs-2.time on now
+		.col-md-2.col-sm-2.col-xs-2.time
+		if post.image.exists
+			img(src=post._.live-feed-image.img-responsive)
+
+		.tag-container 
+		ul.list-unstyled.list-inline.social
+		li.tag food
+		li.tag markets
+
+		.col-md-12.col-xs-12 
+		p!= post.content.brief
+		if post.content.extended
+			p.read-more: a(href='/events/' + post.slug) Read more...
