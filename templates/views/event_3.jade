@@ -1,0 +1,42 @@
+extends ../layouts/default
+
+block content
+	.container.event-page
+		.row
+			.col-md-8.col-sm-8.col-xs-12
+				.col-md-10.col-sm-10.col-xs-10
+					h3= data.event.title
+					.address 
+					!= data.event.location.street1 
+					, 
+					!= data.event.location.postcode
+				.col-md-2.col-sm-2.col-xs-2.time 
+					p On now
+		.row
+			.col-md-8.col-sm-8.col-xs-12.map
+				.img-responsive 
+				#mapholder
+					img(border='0', src='https://maps.googleapis.com/maps/api/staticmap?center='+ data.event.location.street1 +'&markers=color:blue%'+ data.event.location.geo +'&zoom=16&size=600x300&key=AIzaSyBGGIS0SMA0if-LXXBBcf8bS4ta2fy5w9Y')
+				.time-expanded.pull-left
+					h4 
+						!= data.event.start
+						span &nbsp;to&nbsp;
+						!= data.event.end
+				.distance.pull-right
+					h4 0.3 miles
+				.price.clear
+					h4 £
+						!= data.event.price
+			.col-md-4.col-sm-4.col-xs-12.event-copy
+				ul.list-unstyled.list-inline.pull-left
+					li
+						i.fa.fa-user.fa-3x
+
+				span.pull-left 
+					!= data.event.author.name.first
+					span &nbsp;
+					!= data.event.author.name.last
+				span.pull-left
+					!= data.event.publisheddate
+					p
+						!= data.event.description

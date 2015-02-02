@@ -6,22 +6,25 @@ exports = module.exports = function(req, res) {
 	var view = new keystone.View(req, res),
 		locals = res.locals;
 	
-	// Set locals
+	// Init locals
 	locals.section = 'home';
 	locals.filters = {
-		event: req.params.event
+		category: req.params.category
 	};
 	locals.data = {
 		event: [],
-	}	;
-	
-	// Load the current event
+	};
+
+	// Load the events
 	view.on('init', function(next) {
 		
-		var q = keystone.list('Event').model.findOne({
-			state: 'published',
-			slug: locals.filters.event
-		}).populate('author');
+		var q = keystone.list('Event').paginate({
+				page: req.query.page || 1,
+				perPage: 10,
+				maxPages: 10
+			})
+			.where('state', 'published')
+			.sort('-publishedDate');
 		
 		q.exec(function(err, results) {
 			locals.data.event = results;
@@ -31,6 +34,6 @@ exports = module.exports = function(req, res) {
 	});
 	
 	// Render the view
-	view.render('event');
+	view.render('index');
 	
 };

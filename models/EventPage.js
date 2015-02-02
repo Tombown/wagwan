@@ -2,18 +2,18 @@ var keystone = require('keystone'),
 	Types = keystone.Field.Types;
 
 /**
- * PostCategory Model
+ * EventPage Model
  * ==================
  */
 
-var PostCategory = new keystone.List('PostCategory', {
+var EventPage = new keystone.List('EventPage', {
 	autokey: { from: 'name', path: 'key', unique: true }
 });
 
-PostCategory.add({
+EventPage.add({
 	name: { type: String, required: true }
 });
 
-PostCategory.relationship({ ref: 'Post', path: 'categories' });
+EventPage.relationship({ ref: 'Event', path: 'page' });
 
-PostCategory.register();
+EventPage.register();

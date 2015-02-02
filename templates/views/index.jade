@@ -1,26 +1,61 @@
 extends ../layouts/default
 
-mixin post(post)
-	.post(data-ks-editable=editable(user, { list: 'Event', id: post.id }))
-		h2: a(href='/blog/' + event.slug)= event.title
-		
-      
-.container.event-feed
+mixin event(event)
 	.row.shadow
 		.col-md-10.col-sm-10.col-xs-10
-			h3: a(href='/events/' + post.slug)= post.title
-			.distance 0.4 miles
-			.col-md-2.col-sm-2.col-xs-2.time on now
-		.col-md-2.col-sm-2.col-xs-2.time
-		if post.image.exists
-			img(src=post._.live-feed-image.img-responsive)
+			h3: a(href='/event/' + event.slug)= event.title
+			.distance 0.5 miles
+		.col-md-2.col-sm-2.col-xs-2.time on now
+		if event.image.exists
+			a(href='/event/' + event.slug)
+				img(src=event._.image.crop(600,370)).live-feed-image.img-responsive
+		.tag-container
+			ul.list-unstyled.list-inline.social
+			li.tag!= event.hashtag.first
+			if event.hashtag.second
+				li.tag!= event.hashtag.second
+			if event.hashtag.third
+				li.tag!= event.hashtag.third
+			if event.hashtag.fourth
+				li.tag!= event.hashtag.fourth
+		.col-md-12.col-xs-12.no-padding
+			p!= event.description
 
-		.tag-container 
-		ul.list-unstyled.list-inline.social
-		li.tag food
-		li.tag markets
-
-		.col-md-12.col-xs-12 
-		p!= post.content.brief
-		if post.content.extended
-			p.read-more: a(href='/events/' + post.slug) Read more...
+block content
+	.container.event-feed
+		if filters.category && !data.category
+			h3.text-muted Invalid Category.
+		else
+			if data.event.results.length
+				if data.event.totalPages > 1
+					h4.text-weight-normal Showing 
+						strong #{data.event.first}
+						|  to 
+						strong #{data.event.last}
+						|  of 
+						strong #{data.event.total}
+						|  event.
+				else
+					h4.text-weight-normal Showing #{utils.plural(data.event.results.length, '* event')}.
+				.container.event-feed
+					each event in data.event.results
+						+event(event)
+				
+				if data.event.totalPages > 1
+					ul.pagination
+						if data.event.previous
+							li: a(href='?page=' + data.event.previous): span.glyphicon.glyphicon-chevron-left
+						else
+							li.disabled: a(href='?page=' + 1): span.glyphicon.glyphicon-chevron-left
+						each p, i in data.event.pages
+							li(class=data.event.currentPage == p ? 'active' : null)
+								a(href='?page=' + (p == '...' ? (i ? data.event.totalPages : 1) : p ))= p
+						if data.event.next
+							li: a(href='?page=' + data.event.next): span.glyphicon.glyphicon-chevron-right
+						else
+							li.disabled: a(href='?page=' + data.event.totalPages): span.entypo.glyphicon.glyphicon-chevron-right
+			else
+				if data.category
+					h3.text-muted There are no event in the category #{data.category.name}.
+				else
+					h3.text-muted There are no event yet.

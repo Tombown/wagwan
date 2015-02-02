@@ -5,25 +5,25 @@ block content
 		article
 			p: a(href='/blog') &larr; back to the blog
 			hr
-			if !data.post
-				h2 Invalid Post.
+			if !data.event
+				h2 Invalid event.
 			else
 				header
-					h1= data.post.title
-					h5 Posted 
-						if data.post.publishedDate
-							| on #{data.post._.publishedDate.format('MMMM Do, YYYY')} 
-						if data.post.categories && data.post.categories.length
+					h1= data.event.title
+					h5 event 
+						if data.event.publishedDate
+							| on #{data.event._.publishedDate.format('MMMM Do, YYYY')} 
+						if data.event.categories && data.event.categories.length
 							| in 
-							each cat, cat_i in data.post.categories
+							each cat, cat_i in data.event.categories
 								a(href='/blog/' + cat.key)= cat.name
-								if cat_i < data.post.categories.length - 1
+								if cat_i < data.event.categories.length - 1
 									| , 
 								else
 									|  
-						if data.post.author
-							| by #{data.post.author.name.first}
-				.post
-					if data.post.image.exists
-						.image-wrap: img(src=data.post._.image.fit(750,450)).img-responsive
-					!= data.post.content.full
+						if data.event.author
+							| by #{data.event.author.name.first}
+				.event
+					if data.event.image.exists
+						.image-wrap: img(src=data.event._.image.fit(750,450)).img-responsive
+					!= data.event.content.full

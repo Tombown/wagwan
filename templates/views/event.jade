@@ -1,75 +1,77 @@
 extends ../layouts/default
 
-mixin post(post)
-	.post(data-ks-editable=editable(user, { list: 'Post', id: post.id }))
-		h2: a(href='/blog/post/' + post.slug)= post.title
-		p.lead.text-muted Posted 
-			if post.publishedDate
-				| on #{post._.publishedDate.format('MMMM Do, YYYY')} 
-			if post.categories && post.categories.length
-				| in 
-				each cat, i in post.categories
-					a(href='/blog/' + cat.key)= cat.name
-					if i < post.categories.length - 1
-						| , 
-					else
-						|  
-			if post.author
-				| by #{post.author.name.first}
-		if post.image.exists
-			img(src=post._.image.fit(160,160)).img.pull-right
-		p!= post.content.brief
-		if post.content.extended
-			p.read-more: a(href='/blog/post/' + post.slug) Read more...
-
-block intro
-	.container
-		h1= data.category ? data.category.name : 'Blog'
-
 block content
-	.container: .row
-		.col-sm-8.col-md-9
-			if filters.category && !data.category
-				h3.text-muted Invalid Category.
-			else
-				if data.posts.results.length
-					if data.posts.totalPages > 1
-						h4.text-weight-normal Showing 
-							strong #{data.posts.first}
-							|  to 
-							strong #{data.posts.last}
-							|  of 
-							strong #{data.posts.total}
-							|  posts.
-					else
-						h4.text-weight-normal Showing #{utils.plural(data.posts.results.length, '* post')}.
-					.blog
-						each post in data.posts.results
-							+post(post)
-					
-					if data.posts.totalPages > 1
-						ul.pagination
-							if data.posts.previous
-								li: a(href='?page=' + data.posts.previous): span.entypo.entypo-chevron-thin-left
-							else
-								li.disabled: a(href='?page=' + 1): span.entypo.entypo-chevron-thin-left
-							each p, i in data.posts.pages
-								li(class=data.posts.currentPage == p ? 'active' : null)
-									a(href='?page=' + (p == '...' ? (i ? data.posts.totalPages : 1) : p ))= p
-							if data.posts.next
-								li: a(href='?page=' + data.posts.next): span.entypo.entypo-chevron-thin-right
-							else
-								li.disabled: a(href='?page=' + data.posts.totalPages): span.entypo.entypo-chevron-thin-right
-				else
-					if data.category
-						h3.text-muted There are no posts in the category #{data.category.name}.
-					else
-						h3.text-muted There are no posts yet.
-		
-		if data.categories.length
-			.col-sm-4.col-md-3
-				h2 Categories
-				.list-group(style='margin-top: 70px;')
-					a(href='/blog', class=!data.category ? 'active' : false).list-group-item All Categories
-					each cat in data.categories
-						a(href='/blog/' + cat.key, class=data.category && data.category.id == cat.id ? 'active' : false).list-group-item= cat.name
+	script(type='text/javascript').
+		if (navigator.geolocation) { //Checks if browser supports geolocation
+		navigator.geolocation.getCurrentPosition(function (position) {                                                              //This gets the
+		var latitude = position.coords.latitude;                    //users current
+		var longitude = position.coords.longitude;                 //location
+		var coords = new google.maps.LatLng(latitude, longitude); //Creates variable for map coordinates
+		var directionsService = new google.maps.DirectionsService();
+		var directionsDisplay = new google.maps.DirectionsRenderer();
+		var mapOptions = //Sets map options'
+		{
+		zoom: 15,  //Sets zoom level (0-21)
+		center: coords, //zoom in on users location
+		mapTypeControl: true, //allows you to select map type eg. map or satellite
+		navigationControlOptions:
+		{
+		style: google.maps.NavigationControlStyle.SMALL //sets map controls size eg. zoom
+		},
+		mapTypeId: google.maps.MapTypeId.ROADMAP //sets type of map Options:ROADMAP, SATELLITE, HYBRID, TERRIAN
+		};
+		map = new google.maps.Map( /*creates Map variable*/ document.getElementById("map"), mapOptions /*Creates a new map using the passed optional parameters in the mapOptions parameter.*/);
+		directionsDisplay.setMap(map);
+		directionsDisplay.setPanel(document.getElementById('panel'));
+		var request = {
+		origin: coords,
+		destination: data.event.location.postcode,
+		travelMode: google.maps.DirectionsTravelMode.DRIVING
+		};
+
+		directionsService.route(request, function (response, status) {
+		if (status == google.maps.DirectionsStatus.OK) {
+		directionsDisplay.setDirections(response);
+		}
+		});
+		});
+		}
+
+	.container.event-page
+		.row
+			.col-md-8.col-sm-8.col-xs-12
+				.col-md-10.col-sm-10.col-xs-10
+					h3= data.event.title
+					.address 
+					!= data.event.location.street1 
+					, 
+					!= data.event.location.postcode
+				.col-md-2.col-sm-2.col-xs-2.time 
+					p On now
+		.row
+			.col-md-8.col-sm-8.col-xs-12.map
+				#map
+				p= data.event.location.postcode
+				.time-expanded.pull-left
+					h4 
+						!= data.event.start
+						span &nbsp;to&nbsp;
+						!= data.event.end
+				.distance.pull-right
+					h4 0.3 miles
+				.price.clear
+					h4 £
+						!= data.event.price
+			.col-md-4.col-sm-4.col-xs-12.event-copy
+				ul.list-unstyled.list-inline.pull-left
+					li
+						i.fa.fa-user.fa-3x
+
+				span.pull-left 
+					!= data.event.author.name.first
+					span &nbsp;
+					!= data.event.author.name.last
+				span.pull-left
+					!= data.event.publisheddate
+					p
+						!= data.event.description
