@@ -35,9 +35,18 @@ keystone.init({
 
 keystone.import('models');
 
-// Cloudinary wagwan route
-
-keystone.set('cloudinary config', { cloud_name: 'wagwan', api_key: '889197152859195', api_secret: 'Z-JUtkZee17XTSRa6JC8rUhZHFs' });
+console.log(keystone.get('env'));
+if (keystone.get('env') == "production") {
+    // Cloudinary wagwan route
+    keystone.set('cloudinary config', {
+        cloud_name: 'wagwan',
+        api_key: '889197152859195',
+        api_secret: 'Z-JUtkZee17XTSRa6JC8rUhZHFs'
+    });
+} else {
+    // Local MongoDB
+    keystone.set('mongo', 'mongodb://localhost/wagman');
+}
 
 // Setup common locals for your templates. The following are required for the
 // bundled templates and layouts. Any runtime locals (that should be set uniquely

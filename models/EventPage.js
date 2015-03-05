@@ -1,5 +1,5 @@
 var keystone = require('keystone'),
-	Types = keystone.Field.Types;
+    Types = keystone.Field.Types;
 
 /**
  * EventPage Model
@@ -7,13 +7,13 @@ var keystone = require('keystone'),
  */
 
 var EventPage = new keystone.List('EventPage', {
-	autokey: { from: 'name', path: 'key', unique: true }
+    autokey: {from: 'name', path: 'key', unique: true}
 });
 
 EventPage.add({
-	name: { type: String, required: true }
+    name: {type: String, required: true}
 });
 
-EventPage.relationship({ ref: 'Event', path: 'page' });
+EventPage.relationship({ref: 'Event', path: 'page'});
 
 EventPage.register();
