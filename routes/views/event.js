@@ -7,6 +7,7 @@ exports = module.exports = function (req, res) {
         locals = res.locals;
 
     // Set locals
+    locals.routeName = 'event';
     locals.section = 'home';
     locals.filters = {
         event: req.params.event

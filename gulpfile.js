@@ -10,6 +10,7 @@ var fs = require('fs'),
     less = require('gulp-less'),
     minifyCSS = require('gulp-minify-css'),
     sourcemaps = require('gulp-sourcemaps'),
+    babel = require('gulp-babel'),
     concat = require('gulp-concat');
 
 var argv = require('yargs').argv;
@@ -20,6 +21,8 @@ var argv = require('yargs').argv;
 var paths = {
     app : [
         'assets/javascript/utils.js',
+        'assets/javascript/classes/location.js',
+        'assets/javascript/classes/cookie.js',
         'assets/javascript/app.js'
     ],
     libs : [
@@ -83,8 +86,9 @@ gulp.task('js-app', function() {
         .src(paths.app)
         .pipe(sourcemaps.init())
         .pipe(concat('all.js'))
+        .pipe(babel())
         .pipe(sourcemaps.write('.'))
-        .pipe(gulp.dest('public/js'))
+        .pipe(gulp.dest('public/js'));
 });
 
 gulp.task('js-libs', function() {
