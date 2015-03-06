@@ -26,3 +26,8 @@ bower_components
 # IDEs files
 .idea
 .sublime-project*
+
+# Compiled frontend sources
+public/css
+public/fonts
+public/js
