@@ -1,42 +1,43 @@
 {
-    "name": "wagwan",
-    "version": "0.0.0",
-    "private": true,
-    "dependencies": {
-        "async": "*",
-        "cloudinary": "*",
-        "dotenv": "*",
-        "keystone": "*",
-        "underscore": "*",
-        "haversine": "*"
-    },
-    "devDependencies": {
-        "grunt": "*",
-        "grunt-express-server": "*",
-        "grunt-contrib-watch": "*",
-        "grunt-contrib-jshint": "*",
-        "jshint-stylish": "*",
-        "load-grunt-tasks": "*",
-        "grunt-node-inspector": "*",
-        "time-grunt": "*",
-        "grunt-concurrent": "*",
-        "grunt-nodemon": "*",
-        "gulp": "*",
-        "gulp-if": "*",
-        "gulp-less": "*",
-        "gulp-babel": "*",
-        "gulp-concat": "*",
-        "gulp-add-src": "*",
-        "gulp-sourcemaps": "*",
-        "gulp-minify-css": "*",
-        "yargs": "*",
-        "open": "*"
-    },
-    "engines": {
-        "node": ">=0.12"
-    },
-    "scripts": {
-        "start": "node web.js"
-    },
-    "main": "web.js"
+  "name": "wagwan",
+  "version": "0.0.0",
+  "private": true,
+  "dependencies": {
+    "async": "*",
+    "cloudinary": "*",
+    "dotenv": "*",
+    "keystone": "*",
+    "underscore": "*",
+    "haversine": "*",
+    "moment": "~2.9.0"
+  },
+  "devDependencies": {
+    "grunt": "*",
+    "grunt-express-server": "*",
+    "grunt-contrib-watch": "*",
+    "grunt-contrib-jshint": "*",
+    "jshint-stylish": "*",
+    "load-grunt-tasks": "*",
+    "grunt-node-inspector": "*",
+    "time-grunt": "*",
+    "grunt-concurrent": "*",
+    "grunt-nodemon": "*",
+    "gulp": "*",
+    "gulp-if": "*",
+    "gulp-less": "*",
+    "gulp-babel": "*",
+    "gulp-concat": "*",
+    "gulp-add-src": "*",
+    "gulp-sourcemaps": "*",
+    "gulp-minify-css": "*",
+    "yargs": "*",
+    "open": "*"
+  },
+  "engines": {
+    "node": ">=0.12"
+  },
+  "scripts": {
+    "start": "node web.js"
+  },
+  "main": "web.js"
 }
