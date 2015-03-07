@@ -18,6 +18,7 @@ exports = module.exports = function(app) {
 	
 	// Views
 	app.get('/', routes.views.front);
+    app.get('/nearest', routes.views.nearest);
 	app.get('/event/:event', routes.views.event);
 
 

@@ -27,15 +27,13 @@ class Location {
         }
 
         /*TEMP*/
-        cb(new Location(52.769609, 41.400937));
+        //cb(new Location(52.769609, 41.400937));
 
-        //navigator.geolocation.getCurrentPosition(function(position) {
-        //    console.log(position);
-        //
-        //    Cookie.setItem('latitude', position.coords.latitude);
-        //    Cookie.setItem('longitude', position.coords.longitude);
-        //    cb(new Location(position.coords.latitude, position.coords.longitude));
-        //});
+        navigator.geolocation.getCurrentPosition(function(position) {
+            Cookie.setItem('latitude', position.coords.latitude);
+            Cookie.setItem('longitude', position.coords.longitude);
+            cb(new Location(position.coords.latitude, position.coords.longitude));
+        });
     }
 
     /**

@@ -11,7 +11,8 @@
 var _ = require('underscore'),
     querystring = require('querystring'),
     keystone = require('keystone'),
-    moment = require('moment');
+    moment = require('moment'),
+    haversine = require('haversine');
 
 
 /**
@@ -70,6 +71,9 @@ exports.requireUser = function (req, res, next) {
 
 
 exports.timeFormatter = function(req, res, next) {
+    /**
+     *
+     */
     res.locals.formatTime = function(frm) {
         var now = moment(),
             start = moment(frm);
@@ -93,6 +97,9 @@ exports.timeFormatter = function(req, res, next) {
         return start.format('D MMM');
     };
 
+    /**
+     *
+     */
     res.locals.eventStartTime = function(event) {
         var period, shift,
             day = 1000 * 60 * 60 * 24;
@@ -118,5 +125,42 @@ exports.timeFormatter = function(req, res, next) {
         return new Date(+event.start + shift*period);
     };
 
+    /**
+     *
+     */
+    res.locals.distanceToEvent = function(event) {
+        if (req.cookies.latitude && req.cookies.longitude) {
+            var location = {
+                latitude : req.cookies.latitude,
+                longitude : req.cookies.longitude
+            };
+        }
+
+        return decimalAdjust('floor', haversine(location, {
+            latitude : event.location.geo[1],
+            longitude : event.location.geo[0]
+        }, { unit : "mile" }), -2);
+    };
+
+
     next();
 };
+
+
+function decimalAdjust(type, value, exp) {
+    if (typeof exp === 'undefined' || +exp === 0) {
+        return Math[type](value);
+    }
+    value = +value;
+    exp = +exp;
+
+    if (isNaN(value) || !(typeof exp === 'number' && exp % 1 === 0)) {
+        return NaN;
+    }
+
+    value = value.toString().split('e');
+    value = Math[type](+(value[0] + 'e' + (value[1] ? (+value[1] - exp) : -exp)));
+
+    value = value.toString().split('e');
+    return +(value[0] + 'e' + (value[1] ? (+value[1] + exp) : exp));
+}

@@ -5,8 +5,7 @@ exports = module.exports = function (req, res) {
 
     var view = new keystone.View(req, res),
         locals = res.locals,
-        location = null,
-        eventStartTime = locals.eventStartTime;
+        location = null;
 
 
     // Init locals
@@ -26,9 +25,6 @@ exports = module.exports = function (req, res) {
         };
     }
 
-    locals.userLocation = location;
-    locals.distance =
-
     // Load the events
     view.on('init', function (next) {
 
@@ -40,25 +36,16 @@ exports = module.exports = function (req, res) {
             })
             .where({
                 "state" : "published",
-                "$where" : function() {
-                    if (~ ['daily', 'weekly', 'monthly'].indexOf(this.reoccurance)) {
-                        return true;
-                    } else {
-                        var now = new Date();
-                        return (
-                        (this.end > now)
-                        &&
-                        (this.startRestriction ? this.start > now : true)
-                        );
+                "location.geo" : {
+                    $near : {
+                        $geometry: { type: "Point",  coordinates: [ location.longitude, location.latitude] },
+                        $minDistance: 0,
+                        $maxDistance: req.query.distance || 30000
                     }
                 }
             });
 
         q.exec(function (err, results) {
-            results.results.sort(function(a, b) {
-                return eventStartTime(a)-eventStartTime(b);
-            });
-
             locals.data.event = results;
 
             next(err);
@@ -68,5 +55,4 @@ exports = module.exports = function (req, res) {
 
     // Render the view
     view.render('front');
-
 };

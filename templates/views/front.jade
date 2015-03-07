@@ -4,8 +4,7 @@ mixin event(event)
     .row.shadow.event(data-longitude=event.location.geo[0], data-latitude=event.location.geo[1])
         .col-md-10.col-sm-10.col-xs-10
             h3: a(href='/event/' + event.slug)= event.title
-            .distance
-                - console.log('was here with ' + event.title);
+            .distance= distanceToEvent(event) + ' mile'
         .col-md-2.col-sm-2.col-xs-2.time= formatTime(eventStartTime(event))
         if event.image.exists
             a(href='/event/' + event.slug)

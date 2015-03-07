@@ -1,10 +1,12 @@
 
 $(document).ready(() => {
 
+    var page = $("body").attr('id');
 
     Location.getFromGeolocation(function(location){
         if (!location) { return null; }     // TODO: Handle this case;
 
+        /*
         $('.event').each((i, el) => {
             var eventLocation = {
                 latitude : $(el).data('latitude'),
@@ -15,42 +17,43 @@ $(document).ready(() => {
             var distance = decimalAdjust('ceil', location.distanceTo(eventLocation, { unit : 'mile' }), -2);
             $(el).find('.distance').text(`${distance} mile${ distance >= 2 ? 's' : ''}`);
         });
+        */
+
+        if (page == 'page-event') {
+            var $event = $('.container.event-page');
+
+            var directionsService = new google.maps.DirectionsService();
+            var directionsDisplay = new google.maps.DirectionsRenderer()
+
+            var userLocation = new google.maps.LatLng(location.latitude, location.longitude);
+            var eventLocation = new google.maps.LatLng($($event).data('latitude'), $($event).data('longitude'));
+
+            var mapOptions = {
+                el : document.getElementById('map'),
+                zoom: 15,
+                center: userLocation,
+                mapTypeControl: true,
+                navigationControlOptions: {
+                    style: google.maps.NavigationControlStyle.SMALL
+                },
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            };
+
+            var map = new google.maps.Map(document.getElementById('map'), mapOptions);
+
+            directionsDisplay.setMap(map);
+            //directionsDisplay.setPanel(document.getElementById('panel'));
+            var request = {
+                origin: userLocation,
+                destination: eventLocation,
+                travelMode: google.maps.DirectionsTravelMode.DRIVING
+            };
+
+            directionsService.route(request, function (response, status) {
+                if (status == google.maps.DirectionsStatus.OK) {
+                    directionsDisplay.setDirections(response);
+                }
+            });
+        }
     });
-
 });
-
-//  From event.jade
-//
-//if (navigator.geolocation) { //Checks if browser supports geolocation
-//    navigator.geolocation.getCurrentPosition(function (position) {                                                              //This gets the
-//        var latitude = position.coords.latitude;                    //users current
-//        var longitude = position.coords.longitude;                 //location
-//        var coords = new google.maps.LatLng(latitude, longitude); //Creates variable for map coordinates
-//        var directionsService = new google.maps.DirectionsService();
-//        var directionsDisplay = new google.maps.DirectionsRenderer();
-//        var mapOptions = //Sets map options'
-//        {
-//            zoom: 15,  //Sets zoom level (0-21)
-//            center: coords, //zoom in on users location
-//            mapTypeControl: true, //allows you to select map type eg. map or satellite
-//            navigationControlOptions: {
-//                style: google.maps.NavigationControlStyle.SMALL //sets map controls size eg. zoom
-//            },
-//            mapTypeId: google.maps.MapTypeId.ROADMAP //sets type of map Options:ROADMAP, SATELLITE, HYBRID, TERRIAN
-//        };
-//        map = new google.maps.Map(/*creates Map variable*/ document.getElementById("map"), mapOptions /*Creates a new map using the passed optional parameters in the mapOptions parameter.*/);
-//        directionsDisplay.setMap(map);
-//        directionsDisplay.setPanel(document.getElementById('panel'));
-//        var request = {
-//            origin: coords,
-//            destination: data.event.location.postcode,
-//            travelMode: google.maps.DirectionsTravelMode.DRIVING
-//        };
-//
-//        directionsService.route(request, function (response, status) {
-//            if (status == google.maps.DirectionsStatus.OK) {
-//                directionsDisplay.setDirections(response);
-//            }
-//        });
-//    });
-//}
