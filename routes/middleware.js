@@ -70,14 +70,9 @@ exports.requireUser = function (req, res, next) {
 
 
 exports.timeFormatter = function(req, res, next) {
-    res.locals.formatTime = function(frm, till) {
+    res.locals.formatTime = function(frm) {
         var now = moment(),
-            start = moment(frm),
-            end = moment(till);
-
-        if (end < now) {
-            return end.fromNow()
-        }
+            start = moment(frm);
 
         if (now > start) {
             return 'now';
@@ -96,6 +91,32 @@ exports.timeFormatter = function(req, res, next) {
         }
 
         return start.format('D MMM');
-    }
+    };
+
+    res.locals.eventStartTime = function(event) {
+        var period, shift,
+            day = 1000 * 60 * 60 * 24;
+
+        if (!event.reoccurance) {
+            return event.start;
+        }
+
+        switch (event.reoccurance) {
+            case 'daily' :
+                period = day;
+                break;
+            case 'weekly' :
+                period = day * 7;
+                break;
+            case 'monthly' :        // TODO: Attention, dirty patch
+                period = day * 31;
+                break;
+        }
+
+        shift = Math[event.startRestriction ? 'floor' : 'ceil']((Date.now() - event.start)/period);
+
+        return new Date(+event.start + shift*period);
+    };
+
     next();
 };

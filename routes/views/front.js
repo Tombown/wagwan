@@ -5,7 +5,9 @@ exports = module.exports = function (req, res) {
 
     var view = new keystone.View(req, res),
         locals = res.locals,
-        location = null;
+        location = null,
+        eventStartTime = locals.eventStartTime;
+
 
     // Init locals
     locals.routeName = 'front';
@@ -35,6 +37,26 @@ exports = module.exports = function (req, res) {
             })
             .where({
                 "state" : "published",
+                "$where" : function() {
+                    if (~ ['daily', 'weekly', 'monthly'].indexOf(this.reoccurance)) {
+                        return true;
+                    } else {
+                        var now = new Date();
+                        return (
+                        (this.end > now)
+                        &&
+                        (this.startRestriction ? this.start > now : true)
+                        );
+                    }
+                }
+            });
+            /*.sort({ "$where" : function(a, b) {
+                return eventStartTime(a)-eventStartTime(b);
+            }});*/
+
+            /*
+            .where({
+                "state" : "published",
                 "location.geo" : {
                     $near : {
                         $geometry: { type: "Point",  coordinates: [ 41.400937, 52.769609] },
@@ -42,10 +64,15 @@ exports = module.exports = function (req, res) {
                         $maxDistance: req.query.distance || 3000
                     }
                 }
-            });
+            });*/
 
         q.exec(function (err, results) {
+            results.results.sort(function(a, b) {
+                return eventStartTime(a)-eventStartTime(b);
+            });
+
             locals.data.event = results;
+
             next(err);
         });
 

@@ -12,8 +12,8 @@ $(document).ready(() => {
             };
             console.log(eventLocation);
 
-            var distance = decimalAdjust('ceil', location.distanceTo(eventLocation, { unit : 'km' }), -2);
-            $(el).find('.distance').text(`${distance} km${ distance >= 2 ? 's' : ''}`);
+            var distance = decimalAdjust('ceil', location.distanceTo(eventLocation, { unit : 'mile' }), -2);
+            $(el).find('.distance').text(`${distance} mile${ distance >= 2 ? 's' : ''}`);
         });
     });
 

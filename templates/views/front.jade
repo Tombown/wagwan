@@ -5,7 +5,8 @@ mixin event(event)
         .col-md-10.col-sm-10.col-xs-10
             h3: a(href='/event/' + event.slug)= event.title
             .distance
-        .col-md-2.col-sm-2.col-xs-2.time= formatTime(event.start, event.end)
+                - console.log('was here with ' + event.title);
+        .col-md-2.col-sm-2.col-xs-2.time= formatTime(eventStartTime(event))
         if event.image.exists
             a(href='/event/' + event.slug)
                 img(src=event._.image.crop(600, 370)).live-feed-image.img-responsive
