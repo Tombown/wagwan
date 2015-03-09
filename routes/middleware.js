@@ -129,6 +129,10 @@ exports.timeFormatter = function(req, res, next) {
      *
      */
     res.locals.distanceToEvent = function(event) {
+        if (!("latitude" in req.cookies)) { // TODO: warning
+            return null;
+        }
+
         if (req.cookies.latitude && req.cookies.longitude) {
             var location = {
                 latitude : req.cookies.latitude,

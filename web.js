@@ -5,7 +5,7 @@ require('dotenv').load();
 // Require keystone
 var keystone = require('keystone');
 var cloudinary = require('cloudinary');
-	
+
 
 // Initialise Keystone with your project's configuration.
 // See http://keystonejs.com/guide/config for available options
@@ -22,7 +22,7 @@ keystone.init({
 	'favicon': 'public/favicon.ico',
 	'views': 'templates/views',
 	'view engine': 'jade',
-	
+
 	'auto update': true,
 	'session': true,
 	'auth': true,
@@ -35,18 +35,20 @@ keystone.init({
 
 keystone.import('models');
 
-console.log(keystone.get('env'));
-if (keystone.get('env') == "production") {
-    // Cloudinary wagwan route
-    keystone.set('cloudinary config', {
-        cloud_name: 'wagwan',
-        api_key: '889197152859195',
-        api_secret: 'Z-JUtkZee17XTSRa6JC8rUhZHFs'
-    });
-} else {
-    // Local MongoDB
+// Cloudinary wagwan route
+keystone.set('cloudinary config', {
+    cloud_name: 'wagwan',
+    api_key: '889197152859195',
+    api_secret: 'Z-JUtkZee17XTSRa6JC8rUhZHFs'
+});
+
+if (keystone.get('env') == "development") {
     keystone.set('mongo', 'mongodb://localhost/wagman');
 }
+
+keystone.set('google api key', 'AIzaSyBGGIS0SMA0if-LXXBBcf8bS4ta2fy5w9Y');
+keystone.set('google server api key', 'AIzaSyDZQsNBvgagxRfXM2N4O88kWcVZ9h31k1M');
+keystone.set('default region', 'gb');
 
 // Setup common locals for your templates. The following are required for the
 // bundled templates and layouts. Any runtime locals (that should be set uniquely

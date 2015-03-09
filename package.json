@@ -9,7 +9,7 @@
     "keystone": "*",
     "underscore": "*",
     "haversine": "*",
-    "moment": "~2.9.0"
+    "moment": "*"
   },
   "devDependencies": {
     "grunt": "*",
@@ -26,6 +26,7 @@
     "gulp-if": "*",
     "gulp-less": "*",
     "gulp-babel": "*",
+    "gulp-rename": "*",
     "gulp-concat": "*",
     "gulp-add-src": "*",
     "gulp-sourcemaps": "*",
