@@ -42,7 +42,6 @@ Event.add({
         index: true
     },
     startRestriction: Types.Boolean,
-    //reoccurance: {type: Types.Select, options: 'daily, monthly, weekly, other', index: true},
     location: Types.Location,
     publishedDate: {
         type: Types.Date,
