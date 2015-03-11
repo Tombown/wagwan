@@ -27,6 +27,8 @@ keystone.set('cloudinary config', {
     api_secret: 'Z-JUtkZee17XTSRa6JC8rUhZHFs'
 });
 
+keystone.set('db-ip token', 'b444a199c1185cb044c5cf8306451d990a6531ac');
+
 if (keystone.get('env') == "development") {
     keystone.set('mongo', 'mongodb://localhost/wagman');
 }

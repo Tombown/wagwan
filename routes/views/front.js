@@ -1,3 +1,5 @@
+var debug = require('debug')('wagman:routes:front');
+
 var keystone = require('keystone'),
     async = require('async');
 
@@ -5,8 +7,7 @@ exports = module.exports = function (req, res) {
 
     var view = new keystone.View(req, res),
         locals = res.locals,
-        location = null,
-        eventStartTime = locals.eventStartTime;
+        location = null;
 
 
     // Init locals
@@ -30,43 +31,49 @@ exports = module.exports = function (req, res) {
     locals.distance =
 
     // Load the events
+
     view.on('init', function (next) {
+        var EventModel = keystone.list('Event').model;
 
-        var q = keystone.list('Event')
-            .paginate({
-                page: req.query.page || 1,
-                perPage: 10,
-                maxPages: 10
-            })
-            .where({
-                "state" : "published",
-                "$where" : function() {
-                    if (~ ['daily', 'weekly', 'monthly'].indexOf(this.reoccurance)) {
-                        return true;
-                    } else {
-                        var now = new Date();
-                        return (
-                        (this.end > now)
-                        &&
-                        (this.startRestriction ? this.start > now : true)
-                        );
-                    }
-                }
-            });
+        var now = new Date();
+        EventModel
+            .aggregate([
+                { $match : {
+                    state : 'published',
+                    $or : [
+                        { startRestriction : false, end : { $gt : now } },
+                        { startRestriction : true, start : { $gt : now } }
+                    ]
+                }},
+                { $group: { _id: '$recurring', start : { $min : "$start" } }},
+                { $sort : { start : 1 }}
+            ])
+            .exec()
+            .then(function onSuccess(results){
+                var ids = results.map(function(el) { return el._id }),
+                    starts = results.map(function(el) { return el.start });
 
-        q.exec(function (err, results) {
-            results.results.sort(function(a, b) {
-                return eventStartTime(a)-eventStartTime(b);
-            });
+                return keystone.list('Event')
+                    .paginate({
+                        page: req.query.page || 1,
+                        perPage: 10,
+                        maxPages: 10
+                    })
+                    .where({
+                        recurring : { $in : ids },
+                        start :  { $in : starts }
+                    })
+                    .exec(function(err, results){
+                        locals.data.event = results;
 
-            locals.data.event = results;
-
-            next(err);
-        });
-
+                        next();
+                    });
+            }, next);
     });
 
-    // Render the view
     view.render('front');
+
+    // Render the view
+
 
 };

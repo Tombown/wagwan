@@ -12,7 +12,8 @@ var _ = require('underscore'),
     querystring = require('querystring'),
     keystone = require('keystone'),
     moment = require('moment'),
-    haversine = require('haversine');
+    haversine = require('haversine'),
+    request = require('request');
 
 
 /**
@@ -69,6 +70,32 @@ exports.requireUser = function (req, res, next) {
     }
 };
 
+exports.defineLocation = function(req, res, next) {
+    var debug = require('debug')('wagman:middleware:defineLocation');
+
+    if (req.cookies.latitude && req.cookies.longitude) {
+        res.locals.location = {
+            latitude : req.cookies.latitude,
+            longitude : req.cookies.longitude
+        };
+
+        debug('Location from cookies');
+        return next();
+    }
+
+
+    var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress,
+        token = keystone.get('db-ip token'),
+        dbIpUrl;
+
+    ip = ip.match(/\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/)[0];
+    dbIpUrl = 'http://api.db-ip.com/addrinfo?addr='+ip+'&api_key='+token;
+    request(dbIpUrl, function(err, response, body){
+        console.log(body);
+        next();
+    });
+
+};
 
 exports.timeFormatter = function(req, res, next) {
     /**
@@ -130,6 +157,11 @@ exports.timeFormatter = function(req, res, next) {
      */
     res.locals.distanceToEvent = function(event) {
         if (!("latitude" in req.cookies)) { // TODO: warning
+            return null;
+        }
+
+        // event location is not specified
+        if (!event.location || !event.location.geo) {
             return null;
         }
 

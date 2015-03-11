@@ -3,16 +3,18 @@
   "version": "0.0.0",
   "private": true,
   "dependencies": {
-    "async": "^0.9.0",
+    "async": "*",
     "cloudinary": "*",
     "dotenv": "*",
+    "extend": "*",
     "haversine": "*",
     "keystone": "*",
     "moment": "*",
+    "request": "^2.53.0",
     "underscore": "*"
   },
   "devDependencies": {
-    "debug": "^2.1.2",
+    "debug": "*",
     "grunt": "*",
     "grunt-concurrent": "*",
     "grunt-contrib-jshint": "*",

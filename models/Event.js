@@ -21,6 +21,11 @@ Event.add({
         ref: 'User',
         index: true
     },
+    recurring : {
+        type : Types.Relationship,
+        ref: 'RecurringEvent',
+        index : true
+    },
     title: {
         type: String,
         required: true
@@ -67,6 +72,14 @@ Event.add({
         type: Types.Html,
         wysiwyg: true,
         height: 150
+    }
+});
+
+Event.schema.post('save', function(){
+    // we add unique unexisting recurring id so distinct would work correctly
+    if (!this.recurring) {
+        this.recurring = this._id;
+        this.save();
     }
 });
 

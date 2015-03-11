@@ -1,3 +1,5 @@
+var debug = require('debug')('wagman:routes:nearest');
+
 var keystone = require('keystone'),
     async = require('async');
 
@@ -5,7 +7,7 @@ exports = module.exports = function (req, res) {
 
     var view = new keystone.View(req, res),
         locals = res.locals,
-        location = null;
+        location = locals.location;
 
 
     // Init locals
@@ -18,16 +20,10 @@ exports = module.exports = function (req, res) {
         event: []
     };
 
-    if (req.cookies.latitude && req.cookies.longitude) {
-        location = {
-            latitude : req.cookies.latitude,
-            longitude : req.cookies.longitude
-        };
-    }
-
     // Load the events
     view.on('init', function (next) {
 
+        debug(location);
         var q = keystone.list('Event')
             .paginate({
                 page: req.query.page || 1,
@@ -38,7 +34,7 @@ exports = module.exports = function (req, res) {
                 "state" : "published",
                 "location.geo" : {
                     $near : {
-                        $geometry: { type: "Point",  coordinates: [ location.longitude, location.latitude] },
+                        $geometry: { type: "Point",  coordinates: [ location.longitude, location.latitude ] },
                         $minDistance: 0,
                         $maxDistance: req.query.distance || 30000
                     }

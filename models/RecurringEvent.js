@@ -1,9 +1,10 @@
-var debug = require('debug')('models:recurring');
+var debug = require('debug')('wagman:models:recurring');
 
 var keystone = require('keystone'),
     moment = require('moment'),
     async = require('async'),
-    Types = keystone.Field.Types;
+    Types = keystone.Field.Types,
+    deepExtend = require('extend').bind(null, true);
 /**
  * RecurringEvent Model
  * ==========
@@ -96,7 +97,8 @@ RecurringEvent.add({
 });
 
 RecurringEvent.schema.post('save', function(){
-    var self = this;
+    var self = this,
+        EventModel = keystone.list('Event').model;
 
     if (this.type == 'draft') {
         debug('draft - nothing to create');
@@ -123,35 +125,44 @@ RecurringEvent.schema.post('save', function(){
             break;
     }
 
-    var date = moment(self.event.start),
-        till = moment(self.recurrence.till);
+    var eventSource,
+        date = moment(self.event.start),
+        till = moment(self.recurrence.till),
+        continuance = moment(self.event.end).diff(self.event.start);
 
     var events = [];
 
     while (till.diff(date, 'days') >= 0) {
-        events.push(new (keystone.list('Event').model)({
-            title : self.event.title,
-            parent : self,
-            start : date.format('YYYY-MM-DD')
-        }));
+        eventSource = deepExtend({}, self.event.toJSON(), {
+            recurring : self,
+            title : self.event.title + ' (' + date.format('DD-MM-YYYY') + ')',
+            start : moment(date).toDate(),
+            end : moment(date).add(continuance).toDate(),
+            publishedDate : new Date(),
+            state : 'published'
+        });
+
+        events.push(new EventModel(eventSource));
+
         date.add(period);
     }
 
-    console.log(events);
-
-    async.mapSeries(events, function(event, cb) {
-        debug('trying to save event');
-        event.save(function(){
-            debug('Event saved');
-            console.log(this);
-            setTimeout(function(){
-                cb();
-            }, 0)
-        });
-    }, function(err){
-
-        debug('All events have been saved');
-    })
+    EventModel.remove({ recurring : self }, function(err) {
+        debug('removed previous event');
+        err ? console.log(err) : 0;
+        async.mapSeries(events, function(event, cb) {
+            debug('trying to save event');
+            event.save(function(err){
+                debug('Event saved');
+                err ? console.log(err) : 0;
+                setTimeout(function(){
+                    cb(err);
+                }, 0)
+            });
+        }, function(err){
+            debug('All events have been saved');
+        })
+    });
 
 
 });
