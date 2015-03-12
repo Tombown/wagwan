@@ -91,7 +91,18 @@ exports.defineLocation = function(req, res, next) {
     ip = ip.match(/\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/)[0];
     dbIpUrl = 'http://api.db-ip.com/addrinfo?addr='+ip+'&api_key='+token;
     request(dbIpUrl, function(err, response, body){
-        console.log(body);
+        var place = JSON.parse(body);
+        debug(body);
+
+        // saving location to cookie
+        res.cookie('latitude', place.latitude, { maxAge : 3600 });
+        res.cookie('longutude', place.longitude, { maxAge : 3600 });
+
+        // and providing it to controllers
+        res.locals.location = {
+            latitude : place.latitude,
+            longitude : place.longitude
+        };
         next();
     });
 
@@ -156,23 +167,19 @@ exports.timeFormatter = function(req, res, next) {
      *
      */
     res.locals.distanceToEvent = function(event) {
-        if (!("latitude" in req.cookies)) { // TODO: warning
-            return null;
-        }
+        var debug = require('debug')('wagman:middleware:distanceToEvent');
 
         // event location is not specified
         if (!event.location || !event.location.geo) {
             return null;
         }
 
-        if (req.cookies.latitude && req.cookies.longitude) {
-            var location = {
-                latitude : req.cookies.latitude,
-                longitude : req.cookies.longitude
-            };
+        if (!('location' in res.locals)) {
+            debug('Location is not defined');
+            return null;
         }
 
-        return decimalAdjust('floor', haversine(location, {
+        return decimalAdjust('floor', haversine(res.locals.location, {
             latitude : event.location.geo[1],
             longitude : event.location.geo[0]
         }, { unit : "mile" }), -2);
