@@ -6,6 +6,7 @@ Wagwan web application
 ### Installation
 ```bash
 npm install
+bower install
 gulp install
 ```
 
