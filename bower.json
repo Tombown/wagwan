@@ -1,0 +1,21 @@
+{
+    "name": "wagman",
+    "version": "0.0.0",
+    "authors": [
+        "tombown",
+        "dlukichev <dmlukichev@gmail.com>"
+    ],
+    "moduleType": [
+        "amd"
+    ],
+    "license": "MIT",
+    "private": true,
+    "dependencies": {
+        "html5shiv" : "*",
+        "respond-minmax" : "*",
+        "jquery": "*",
+        "bootstrap": "*",
+        "gmaps" : "*",
+        "font-awesome" : "*"
+    }
+}

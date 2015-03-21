@@ -2,90 +2,40 @@ include ../mixins/flash-messages
 
 doctype html
 html
+    head
+        meta(charset="utf-8")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        meta(http-equiv="X-UA-Compatible" content="IE=edge")
 
-	//- HTML HEADER
-	head
-		meta(charset="utf-8")
-		meta(name="viewport", content="width=device-width, initial-scale=1.0")
-		meta(http-equiv="X-UA-Compatible" content="IE=edge")
+        title= title || 'wagwan'
+        link(rel="shortcut icon", href="/favicon.ico", type="image/x-icon")
 
-		title= title || 'wagwan'
-		link(rel="shortcut icon", href="/favicon.ico", type="image/x-icon")
+        if user && user.canAccessKeystone
+            link(href="/keystone/styles/content/editor.min.css", rel="stylesheet")
 
-		//- Customise the stylesheet for your site by editing /public/styles/site.less
-		//- All .less files will be automatically compiled and minified in production.
-		
-		link(href="/styles/site/bootstrap.min.css", rel="stylesheet")
-		link(src="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css", rel="stylesheet")
+        //-[if lt IE 9]
+            script(src="/js/ie8.js")
+        //-[endif]
 
-		link(href="/styles/site.min.css", rel="stylesheet")
-		link(href="/styles/site/custom.css", rel="stylesheet")
-		link(href="/styles/site/examples.css", rel="stylesheet")
+        block css
+            link(href="/css/bootstrap.css", rel="stylesheet")
+            link(href="/css/layout.css", rel="stylesheet")
+        block head
+    body(id="page-#{routeName}")
+        div(role="navigation").navbar.navbar-default
+            .container-fluid
+                .navbar-header
+                    a.navbar-brand(href='/') Clapham Common
 
-		//- This file provides the default styling for the KeystoneJS Content Editor
-		if user && user.canAccessKeystone
-			link(href="/keystone/styles/content/editor.min.css", rel="stylesheet")
+        #body
+            block intro
+            +flash-messages(messages)
+            block content
 
-		//- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries
-		//- Safely remove this block if you are not targeting IE8
-		//-[if lt IE 9]
-			script(src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js")
-			script(src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js")
-		//-[endif]
+        .container: #footer
 
-		//- JAVASCRIPT
-		script(type='text/javascript', src='http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js')
-
-		//- Maps
-		script(src="http://maps.google.com/maps/api/js?AIzaSyBGGIS0SMA0if-LXXBBcf8bS4ta2fy5w9Y")
-		script(src="/js/gmaps.js")
-
-		//- Include template-specific stylesheets by extending the css block
-		block css
-
-		//- Add any other template-specific HEAD tags by extending the head block
-		block head
-
-	//- HTML BODY
-	body
-
-		//- HEADER
-		div(role="navigation").navbar.navbar-default
-				.container-fluid
-					.navbar-header
-						a.navbar-brand(href='/') Clapham Common
-
-		//- BODY
-		#body
-
-			//- NOTE:
-			//- There is no .container wrapping class around body blocks to allow more flexibility in design.
-			//- Remember to include it in your templates when you override the intro and content blocks!
-
-			//- The Intro block appears above flash messages (used for temporary information display)
-			block intro
-
-			//- Flash messages allow you to display once-off status messages to users, e.g. form
-			//- validation errors, success messages, etc.
-			+flash-messages(messages)
-
-			//- The content block should contain the body of your template's content
-			block content
-
-
-		//- FOOTER
-		.container: #footer
-
-		//- Customise which Bootstrap javascript files are served by including
-		//- them specifically here, instead of bootstrap-3.2.0.min.js
-		script(src='/js/lib/bootstrap/bootstrap-3.2.0.min.js')
-
-		//- The KeystoneJS Content Editor provides support for ks-editable data attributes,
-		//- which generate links to edit content for users who can access Keystone
-		if user && user.canAccessKeystone
-			script(src='/keystone/js/content/editor.js')
-
-
-		//- Add scripts that are globally required by your site here.
-		//- Include template-specific javascript files by extending the js block
-		block js
+        block js
+            script(type='text/javascript', src='/js/vendor.js')
+            script(type='text/javascript', src='/js/all.js')
+            if user && user.canAccessKeystone
+                script(src='/keystone/js/content/editor.js')
