@@ -17,6 +17,8 @@ html
             script(src="/js/ie8.js")
         //-[endif]
 
+        link(href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css", rel="stylesheet")
+
         block css
             link(href="/css/bootstrap.css", rel="stylesheet")
             link(href="/css/layout.css", rel="stylesheet")
@@ -36,6 +38,7 @@ html
 
         block js
             script(type='text/javascript', src='/js/vendor.js')
+            script(type='text/javascript', src='/js/moment.js')
             script(type='text/javascript', src='/js/all.js')
             if user && user.canAccessKeystone
                 script(src='/keystone/js/content/editor.js')

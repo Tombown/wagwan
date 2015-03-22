@@ -138,6 +138,16 @@ exports.timeFormatter = function(req, res, next) {
     /**
      *
      */
+    res.locals.eventTime = function(frm) {
+        var now = moment(),
+            start = moment(frm);
+
+        return start.format('dddd MMMM Do h:mm a');
+    };
+
+    /**
+     *
+     */
     res.locals.eventStartTime = function(event) {
         var period, shift,
             day = 1000 * 60 * 60 * 24;
