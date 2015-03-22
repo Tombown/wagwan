@@ -1,4 +1,6 @@
 var keystone = require('keystone'),
+    moment = require('moment'),
+    async = require('async'),
     Types = keystone.Field.Types;
 
 keystone.set('google api key', 'AIzaSyBGGIS0SMA0if-LXXBBcf8bS4ta2fy5w9Y');
@@ -38,6 +40,7 @@ Event.add({
     },
     start: {
         type: Types.Datetime,
+        format: moment().format('dddd, MMMM Do YYYY, h:mm:ss a'),
         default: Date.now(),
         index: true
     },

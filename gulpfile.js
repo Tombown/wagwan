@@ -33,6 +33,9 @@ var paths = {
     ie8 : [
         'bower_components/html5shiv/dist/html5shiv.min.js',
         'bower_components/respond-minmax/dest/respond.min.js'
+    ],
+    moment : [
+        'node_modules/moment/moment.js'
     ]
 };
 
@@ -109,7 +112,16 @@ gulp.task('js-ie8', function() {
         .pipe(gulp.dest('public/js'))
 });
 
-gulp.task('js', ['js-app', 'js-libs', 'js-ie8']);
+gulp.task('js-moment', function() {
+    return gulp
+        .src(paths.moment)
+        .pipe(sourcemaps.init())
+        .pipe(concat('moment.js'))
+        .pipe(sourcemaps.write('.'))
+        .pipe(gulp.dest('public/js'))
+});
+
+gulp.task('js', ['js-app', 'js-libs', 'js-ie8', 'js-moment']);
 
 //
 //   Common tasks
