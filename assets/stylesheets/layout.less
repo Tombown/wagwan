@@ -98,108 +98,12 @@ body{
 }
 
 /*!
- * Screen sizes
- */
-@media (max-width:360px) {
-  .col-xs-10 h3 {
-    font-size: 18px;
-  }
-  .day {
-    font-size: 11px;
-  }
-  .tag {
-    font-size: 14px;
-  }
-  .map h4 {
-    font-size: 14px;
-    margin-top: 0;
-    margin-bottom: 0;
-  }
-  .event-page .fa-2x {
-    font-size: 44px;
-    margin: 0 10px 0 10px;
-  }
-  .event-feed .fa-2x {
-    font-size: 22px;
-  }
-  div .social-event-page {
-    margin-bottom: 35px;
-  }
-  .event-page {
-    padding-top: 10px;
-  }
-  .btn {
-    font-size: 18px;
-  }
-  .btn-primary {
-    height: 44px;
-    position: fixed;
-    bottom: 0;
-    right: 0;
-    left: 0;
-    border-bottom: 2px #fff solid;
-  }
-  .navbar {
-    min-height: 40px;
-  }
-  .event-feed {
-    padding-top: 52px;
-  }}
-
-@media (min-width:600px) {
-  .event-feed {
-    width:600px;
-  }
-  .event-page {
-    width:600px;
-  }
-  .event-page .social {
-    float: left;
-  }
-  .event-page {
-    padding-top: 20px;
-  }
-  .event-page {
-    padding-top: 0;
-    margin-top: 20px;
-  }
-  .map {
-  width:600px
-  }}
-
-@media (min-width:768px) {
-  .event-page {
-    width:753px;
-  }}
-
-@media (min-width:992px) {
-  .event_feed_container {
-    width:600px
-  }
-  .event-page {
-    width:900px;
-  }
-  .event-page .social {
-    float: left;
-  }}
-
-@media (min-width:1200px) {
-  .event_feed_container {
-    width:600px
-  }
-  .event-page {
-    width:900px;
-  }
-  .event-page .social {
-    float: left;
-  }
-  .event-page {
-    padding-top: 20px;
-  }}
-
-/*!
  * Hacks
  */
+
+.text-weight-normal {
+  display: none;
+}
 
 body {
   background-color: #efefef;
@@ -207,8 +111,8 @@ body {
 
 .row {
   background-color: #fff;
-  padding: 5px;
-  margin-bottom: 10px;
+  padding: 16px;
+  margin: 0;
 }
 
 nav.navbar.navbar-default {
@@ -223,7 +127,9 @@ nav.navbar.navbar-default {
 }
 
 .event-page {
-  background-color: #fff;
+  max-width: 900px;
+  margin-right: auto;
+  margin-left: auto;
 }
 
 .shadow {
@@ -233,6 +139,16 @@ nav.navbar.navbar-default {
 /*!
  * Live events feed
  */
+
+.event-feed {
+  max-width: 600px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.event {
+  margin-bottom: 16px;
+}
 
 .time {
   text-align: center;
@@ -309,7 +225,6 @@ img {
 
 .map {  
   width: 60%;
-  padding: 0 5px;
 }
 
 .map img {
@@ -339,13 +254,15 @@ img {
   padding:0;
 }
 
-.time-expanded{
+.time-expanded {
   width: 80%;
   padding-top: 10px;
+  float: left;
 }
 
 .distance {
   padding-top: 10px;
+  float: right;
 }
 
 .price {
@@ -366,7 +283,7 @@ img {
 }
 
 .details {
-  padding: 0 10px;
+  padding-left: 16px;
   width: 40%;
 }
 
@@ -381,5 +298,51 @@ button h4 {
 .no-padding {
   padding: 0;
 }
+
+/*!
+ * Screen sizes
+ */
+
+@media (max-width:600px) {
+  .map{
+    width: 100%;
+  }
+  #map {
+    height: 200px;
+  }
+  .details {
+    width: 100%;
+    padding-left: 0;
+  }
+  .title {
+    width: 100%;
+  }
+  .btn {
+    font-size: 18px;
+  }
+  .btn-primary {
+    height: 44px;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    border-bottom: 2px #fff solid;
+  }
+  .col-xs-10 h3 {
+    font-size: 18px;
+  }
+  .day {
+    font-size: 11px;
+  }
+  .event-feed .fa-2x {
+    font-size: 22px;
+  }
+  .time-expanded {
+    width:100%;
+    float: none;
+  }
+  .distance {
+    float: none;
+  }}
 
 
