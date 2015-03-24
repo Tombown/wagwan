@@ -25,7 +25,7 @@ mixin event(event)
             p!= event.brief
 
 block content
-    .container.event-feed
+    .event-feed
         if filters.category && !data.category
             h3.text-muted Invalid Category.
         else
@@ -40,7 +40,6 @@ block content
                         |  event.
                 else
                     h4.text-weight-normal Showing #{utils.plural(data.event.results.length, '* event')}.
-                .container.event-feed
                     each event in data.event.results
                         +event(event)
 

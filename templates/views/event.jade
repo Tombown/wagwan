@@ -1,24 +1,24 @@
 extends ../layouts/default
 
 block content
-    .container.event-page(data-latitude=data.event.location.geo[1], data-longitude=data.event.location.geo[0])
+    .event-page(data-latitude=data.event.location.geo[1], data-longitude=data.event.location.geo[0])
         .row
             .col-md-8.col-sm-8.col-xs-12.title
                 .col-md-10.col-sm-10.col-xs-10
                     h3= data.event.title
                     .address
-                    != data.event.location.street1
-                    | ,
-                    != data.event.location.postcode
+                        != data.event.location.street1
+                        | ,
+                        != data.event.location.postcode
                 .col-md-2.col-sm-2.col-xs-2.time
-                    p= formatTime(data.event.start, data.event.end)
+                    span= formatTime(data.event.start, data.event.end)
         .row
             .col-md-8.col-sm-8.col-xs-12.map
                 #map
-                .time-expanded.pull-left
+                .time-expanded
                     h4= eventTime(data.event.start) + ' to ' + eventTime(data.event.end)
-                .distance.pull-right
-                    h4.pull-right= distanceToEvent(data.event) + ' mile'
+                .distance
+                    h4= distanceToEvent(data.event) + ' mile'
                 .price.pull-left
                     h4 £
                         != data.event.price
@@ -26,17 +26,14 @@ block content
                 .event-copy
                     ul.list-unstyled.list-inline
                         li
-                            i.fa.fa-user.fa-3x
-
-                    span
-                        != data.event.author.name.first
-                        span &nbsp;
-                        != data.event.author.name.last
-                    span
-                        != data.event.publisheddate
-                        p
-                            != data.event.description
-                    .clear
+                            i.fa.fa-user.fa-2x
+                        li
+                            h4
+                                != data.event.author.name.first
+                                span &nbsp;
+                                != data.event.author.name.last
+                    != data.event.publisheddate
+                    != data.event.description
                 .tag-container
                     ul.list-unstyled.list-inline.social
                         li.tag!= data.event.hashtag.first
