@@ -1,6 +1,7 @@
 var keystone = require('keystone'),
     moment = require('moment'),
     async = require('async'),
+    cloudinary = require('cloudinary')
     Types = keystone.Field.Types;
 
 keystone.set('google api key', 'AIzaSyBGGIS0SMA0if-LXXBBcf8bS4ta2fy5w9Y');
@@ -56,7 +57,9 @@ Event.add({
         index: true,
         dependsOn: { state: 'published' }
     },
-    image: Types.CloudinaryImage,
+    image: {
+        type: Types.CloudinaryImage,
+    },
     hashtag: {
         first: { type: String, required: true, default: '#example' },
         second: String,

@@ -29,9 +29,6 @@ body{
   width: 95%;
   height: 350px;
   margin: 0 auto;
-  -moz-box-shadow: 0px 5px 20px #ccc;
-  -webkit-box-shadow: 0px 5px 20px #ccc;
-  box-shadow: 0px 5px 20px #ccc;
 }
 #map.large{
   height:500px;
@@ -114,7 +111,7 @@ nav.navbar.navbar-default {
 }
 
 .event-page {
-  max-width: 900px;
+  max-width: 720px;
   margin-right: auto;
   margin-left: auto;
 }
@@ -131,6 +128,10 @@ nav.navbar.navbar-default {
   max-width: 600px;
   margin-right: auto;
   margin-left: auto;
+}
+
+.first-row {
+  padding: 16px 16px 0 16px;
 }
 
 .event {
@@ -179,7 +180,6 @@ h1, .h1, h2, .h2, h3, .h3 {
 }
 
 .tag-container {
-  float: left;
   margin-left: 2px;
 }
 
@@ -207,14 +207,14 @@ img {
  */
 
  .title {
-   width: 60%
+   width: 100%
  }
 
-.map {  
-  width: 60%;
+.map-container {  
+  width: 100%;
 }
 
-.map img {
+.map-container img {
   width: 100%;
 }
 
@@ -228,33 +228,27 @@ img {
 }
 
 .btn-width-100 {
-  margin: 10px 0 0 0;
+  margin: 8px 0 8px 0;
   width: 100%;
 }
 
 .event-page .social {
-  padding: 10px 0 0 0;
   text-align: center;
-}
-
-.social-event-page ul li {
-  padding:0;
 }
 
 .time-expanded {
   width: 80%;
-  padding-top: 10px;
+  padding-top: 6px;
   float: left;
 }
 
-.distance {
-  padding-top: 10px;
-  float: right;
+.distance h4 {
+  margin: 10px 0 0 0;
 }
 
 .price {
   padding: 0;
-  width: 100%;
+  margin-top: 6px;
 }
 
 .clear {
@@ -270,8 +264,7 @@ img {
 }
 
 .details {
-  padding-left: 16px;
-  width: 40%;
+  width: 100%;
 }
 
 button h4 {
@@ -291,18 +284,11 @@ button h4 {
  */
 
 @media (max-width:600px) {
-  .map{
+  .map-container{
     width: 100%;
   }
   #map {
     height: 200px;
-  }
-  .details {
-    width: 100%;
-    padding-left: 0;
-  }
-  .title {
-    width: 100%;
   }
   .btn {
     font-size: 18px;

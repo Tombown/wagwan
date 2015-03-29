@@ -2,8 +2,8 @@ extends ../layouts/default
 
 block content
     .event-page(data-latitude=data.event.location.geo[1], data-longitude=data.event.location.geo[0])
-        .row
-            .col-md-8.col-sm-8.col-xs-12.title
+        .row.first-row
+            .title
                 .col-md-10.col-sm-10.col-xs-10
                     h3= data.event.title
                     .address
@@ -12,17 +12,18 @@ block content
                         != data.event.location.postcode
                 .col-md-2.col-sm-2.col-xs-2.time
                     span= formatTime(data.event.start, data.event.end)
+                .distance.pull-right
+                    h4= distanceToEvent(data.event) + ' mile'
         .row
-            .col-md-8.col-sm-8.col-xs-12.map
+            .map-container
                 #map
+            .details
                 .time-expanded
                     h4= eventTime(data.event.start) + ' to ' + eventTime(data.event.end)
-                .distance
-                    h4= distanceToEvent(data.event) + ' mile'
-                .price.pull-left
+                .price.pull-right
                     h4 £
                         != data.event.price
-            .col-md-4.col-sm-4.col-xs-12.details
+                .clear
                 .event-copy
                     ul.list-unstyled.list-inline
                         li
@@ -34,7 +35,7 @@ block content
                                 != data.event.author.name.last
                     != data.event.publisheddate
                     != data.event.description
-                .tag-container
+                .tag-container.pull-left
                     ul.list-unstyled.list-inline.social
                         li.tag!= data.event.hashtag.first
                         if data.event.hashtag.second
@@ -43,17 +44,8 @@ block content
                             li.tag!= data.event.hashtag.third
                         if data.event.hashtag.fourth
                             li.tag!= data.event.hashtag.fourth
-                .button
-                    if data.event.phoneNumber
-                    a(href='tel:' + data.event.phoneNumber)
-                        button.button.btn.btn-default.btn-width-100
-                            h4 0207 622 8259
-                    if data.event.link
-                    a(href=data.event.link)
-                        button.button.btn.btn-primary.btn-width-100
-                            h4 Visit website
-                .social-event-page
-                    ul.list-unstyled.list-inline.social
+                .social-event-page.pull-right
+                    ul.list-unstyled.list-inline.social.pull-right
                         li
                             a(href='#')
                                 i.fa.fa-facebook-square.fa-2x
@@ -63,6 +55,16 @@ block content
                         li
                             a(href='#')
                                 i.fa.fa-google-plus-square.fa-2x
+                .clear
+                .button
+                    if data.event.phoneNumber
+                    a(href='tel:' + data.event.phoneNumber)
+                        button.button.btn.btn-default.btn-width-100
+                            h4 0207 622 8259
+                    if data.event.link
+                    a(href=data.event.link)
+                        button.button.btn.btn-primary.btn-width-100
+                            h4= 'Visit ' + data.event.title + ' website'
 
 prepend js
     script(src="http://maps.google.com/maps/api/js?sensor=true")

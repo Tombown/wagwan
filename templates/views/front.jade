@@ -11,7 +11,7 @@ mixin event(event)
         .col-md-2.col-sm-2.col-xs-2.time= formatTime(eventStartTime(event))
         if event.image.exists
             a(href='/event/' + event.slug)
-                img(src=event._.image.crop(600, 370)).live-feed-image.img-responsive
+                img(src=event._.image.fill(568, 350), alt=event.slug).live-feed-image.img-responsive
         .tag-container
             ul.list-unstyled.list-inline.social
             li.tag!= event.hashtag.first
