@@ -22,7 +22,7 @@
 //
 body{
   font-family: 'Droid Sans', 'Helvetica', Arial, sans-serif;
-  margin:5px;
+  margin: 0;
 }
 #map{
   display: block;
@@ -79,6 +79,11 @@ body{
 
 .col-xs-1, .col-sm-1, .col-md-1, .col-lg-1, .col-xs-2, .col-sm-2, .col-md-2, .col-lg-2, .col-xs-3, .col-sm-3, .col-md-3, .col-lg-3, .col-xs-4, .col-sm-4, .col-md-4, .col-lg-4, .col-xs-5, .col-sm-5, .col-md-5, .col-lg-5, .col-xs-6, .col-sm-6, .col-md-6, .col-lg-6, .col-xs-7, .col-sm-7, .col-md-7, .col-lg-7, .col-xs-8, .col-sm-8, .col-md-8, .col-lg-8, .col-xs-9, .col-sm-9, .col-md-9, .col-lg-9, .col-xs-10, .col-sm-10, .col-md-10, .col-lg-10, .col-xs-11, .col-sm-11, .col-md-11, .col-lg-11, .col-xs-12, .col-sm-12, .col-md-12, .col-lg-12 {
   padding: 0;
+}
+
+.container {
+  padding-left: 16px;
+  padding-right: 16px;
 }
 
 /*!
@@ -237,7 +242,7 @@ img {
 }
 
 .time-expanded {
-  width: 80%;
+  width: 85%;
   padding-top: 6px;
   float: left;
 }
@@ -284,6 +289,14 @@ button h4 {
  */
 
 @media (max-width:600px) {
+  .navbar {
+    display: none;
+  }
+  .container {
+    padding-left: 8px;
+    padding-right: 8px;
+    padding-top: 8px;
+  }
   .map-container{
     width: 100%;
   }
@@ -293,14 +306,6 @@ button h4 {
   .btn {
     font-size: 18px;
   }
-  .btn-primary {
-    height: 44px;
-    position: fixed;
-    bottom: 0;
-    right: 0;
-    left: 0;
-    border-bottom: 2px #fff solid;
-  }
   .col-xs-10 h3 {
     font-size: 18px;
   }
@@ -309,10 +314,6 @@ button h4 {
   }
   .event-feed .fa-2x {
     font-size: 22px;
-  }
-  .time-expanded {
-    width:100%;
-    float: none;
   }
   .distance {
     float: none;
