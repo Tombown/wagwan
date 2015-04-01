@@ -87,11 +87,6 @@ RecurringEvent.add({
             type: Types.Html,
             wysiwyg: true,
             height: 50
-        },
-        extended: {
-            type: Types.Html,
-            wysiwyg: true,
-            height: 150
         }
     }
 });
