@@ -7,8 +7,11 @@ mixin event(event)
                     )
         .col-md-10.col-sm-10.col-xs-10
             h3: a(href='/event/' + event.slug)= event.title
-            .distance= (distanceToEvent(event) ? distanceToEvent(event) + ' mile' : '')
-        .col-md-2.col-sm-2.col-xs-2.time= formatTime(eventStartTime(event))
+            .distance 
+                h4 
+                    != (distanceToEvent(event) ? distanceToEvent(event) + ' mile' : '')
+        .event-feed-time-container
+            .col-md-2.col-sm-2.col-xs-2.time.event-feed-time= formatTime(eventStartTime(event))
         if event.image.exists
             a(href='/event/' + event.slug)
                 img(src=event._.image.fill(568, 350), alt=event.slug).live-feed-image.img-responsive
@@ -21,6 +24,7 @@ mixin event(event)
                 li.tag!= event.hashtag.third
             if event.hashtag.fourth
                 li.tag!= event.hashtag.fourth
+            .clear
         .col-md-12.col-xs-12.no-padding
             p!= event.brief
 
