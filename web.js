@@ -50,4 +50,6 @@ keystone.set('nav', {
     'users': 'users'
 });
 
+keystone.set('port', '8080')
+
 keystone.start();

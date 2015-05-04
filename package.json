@@ -5,8 +5,9 @@
   "dependencies": {
     "async": "*",
     "cloudinary": "*",
-    "dotenv": "*",
+    "dotenv": "^1.1.0",
     "extend": "*",
+    "gulp-install": "^0.4.0",
     "haversine": "*",
     "keystone": "*",
     "moment": "*",
