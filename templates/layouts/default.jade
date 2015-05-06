@@ -27,9 +27,8 @@ html
         div(role="navigation").navbar.navbar-default
             .container-fluid
                 .navbar-header
-                    a.navbar-brand.pull-left(href='/') Back
-                    a.navbar-brand(href='/') Event
-
+                  a.navbar-brand(href='/')
+                    img(alt='Wagwan', width='20', height='20', src='/images/logo.png')
         #body
             block intro
             +flash-messages(messages)
