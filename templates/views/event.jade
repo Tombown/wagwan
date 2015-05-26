@@ -3,12 +3,11 @@ extends ../layouts/default
 block content
     .container.event-page.shadow(data-latitude=data.event.location.geo[1], data-longitude=data.event.location.geo[0])
         .row
-            .col-md-10.col-sm-10.col-xs-12.title
-                h3= data.event.title
+            .col-xs-9.title
+                h2= data.event.title
                 .address
                     h4
-                        != data.event.location.street1
-                        | ,
+                        != data.event.location.street1 + ', '
                         != data.event.location.postcode
             .col-md-2.col-sm-2.time.event-page-time
                 span= formatTime(data.event.start, data.event.end)

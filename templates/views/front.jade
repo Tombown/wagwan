@@ -16,7 +16,7 @@ mixin event(event)
             a(href='/event/' + event.slug)
                 img(src=event._.image.fill(568, 350), alt=event.slug).live-feed-image.img-responsive
         .tag-container
-            ul.list-unstyled.list-inline.social
+            ul.list-unstyled.list-inline.social.clear
             li.tag!= event.hashtag.first
             if event.hashtag.second
                 li.tag!= event.hashtag.second
